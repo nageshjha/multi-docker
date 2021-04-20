@@ -1,22 +1,24 @@
 sudo: required
+language: generic
+
 services:
   - docker
+
 before_install:
   - docker build -t nageshjha/react-test -f ./client/Dockerfile.dev ./client
+
 script:
-  - docker run nageshjha/react-test npm test -- --coverage
+  - docker run -e CI=true nageshjha/react-test npm test
+
 after_success:
   - docker build -t nageshjha/multi-client ./client
   - docker build -t nageshjha/multi-nginx ./nginx
   - docker build -t nageshjha/multi-server ./server
   - docker build -t nageshjha/multi-worker ./worker
-  #LogIn
+  # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  #Push to dockerHub
+  # Take those images and push them to docker hub
   - docker push nageshjha/multi-client
   - docker push nageshjha/multi-nginx
   - docker push nageshjha/multi-server
   - docker push nageshjha/multi-worker
-
-
- 
