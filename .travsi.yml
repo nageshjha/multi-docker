@@ -22,3 +22,7 @@ after_success:
   - docker push nageshjha/multi-nginx
   - docker push nageshjha/multi-server
   - docker push nageshjha/multi-worker
+
+
+
+  
